@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Coffre</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            user-select: none; /* Empêche de sélectionner le texte en cliquant vite */
+        }
+
+        /* Section de gauche pour l'image */
+        .left-panel {
+            width: 35%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #e9ecef;
+        }
+
+        .left-panel img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .left-panel img:active {
+            transform: scale(0.95);
+        }
+
+        /* Section du milieu pour le compteur */
+        .center-panel {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .counter-display {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            padding: 20px 40px;
+            border-radius: 12px;
+            transition: transform 0.1s ease, color 0.2s ease;
+        }
+
+        .counter-display:hover {
+            color: #dc3545; /* Devient rouge au survol pour indiquer la soustraction */
+        }
+
+        .counter-display:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Partie gauche : Image (Ajoute 1) -->
+    <div class="left-panel">
+        <img src="coffre.png" alt="Coffre au trésor" id="chest-img" title="Cliquer pour ajouter 1">
+    </div>
+
+    <!-- Partie milieu : Compteur (Soustrait 1 au clic) -->
+    <div class="center-panel">
+        <div class="counter-display" id="counter" title="Cliquer pour enlever 1">0</div>
+    </div>
+
+    <script>
+        const counterElement = document.getElementById('counter');
+        const chestImg = document.getElementById('chest-img');
+
+        // Récupérer le score sauvegardé dans localStorage ou démarrer à 0
+        let count = parseInt(localStorage.getItem('chestCount')) || 0;
+        counterElement.textContent = count;
+
+        // Fonction pour mettre à jour l'affichage et la sauvegarde
+        function updateCounter(newValue) {
+            count = newValue;
+            counterElement.textContent = count;
+            localStorage.setItem('chestCount', count);
+        }
+
+        // Clic sur l'image du coffre : Ajoute 1
+        chestImg.addEventListener('click', () => {
+            updateCounter(count + 1);
+        });
+
+        // Clic sur les chiffres du compteur : Enlève 1
+        counterElement.addEventListener('click', () => {
+            updateCounter(count - 1);
+        });
+    </script>
+
+</body>
+</html>
